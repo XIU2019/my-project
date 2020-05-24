@@ -1,13 +1,15 @@
 {
   "pages": [
+     "pages/my/main",
+    "pages/goodManage/main",
+    "pages/orderList/main",
     "pages/index/main",
     "pages/login/main",
     "pages/orderDetail/main",
     "pages/products/main",
     "pages/search/main",
-    "pages/manage/main",
-    "pages/orderList/main",
-    "pages/my/main"
+    "pages/manage/main"
+
   ],
   "window": {
     "backgroundTextStyle": "light",
@@ -34,7 +36,7 @@
         "text": "已处理订单"
       },
       {
-        "pagePath": "pages/my/main",
+        "pagePath": "pages/goodManage/main",
         "selectedIconPath": "static/images/tab3-o.png",
         "iconPath": "static/images/tab5.png",
         "text": "商品"
@@ -89,8 +91,6 @@
     "van-panel": "./static/vant/panel/index",
     "van-divider": "./static/vant/divider/index",
     "van-notify": "./static/vant/notify/index"
-  },
-  "expo": {
   },
   "cloud": true
 }

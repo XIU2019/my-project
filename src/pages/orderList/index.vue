@@ -1,121 +1,114 @@
 <template>
-  <view class="contain">
-     <view class="go">
-<!--             <button  v-on:click="goHome">{{content}}</button>-->
-       <van-button type="info" v-on:click="goHome">{{content}}</van-button>
-     </view>
-<view>
-
-  <img class="bg" :src="img" alt=""/>
-</view>
+  <view>
+    <van-tabs @change="onChangeTitle">
+      <van-tab title="进行中">
+        <view v-for="(item, index) in orderList"
+              :key="index">
+          <van-cell>
+            <view slot="title">
+              {{index+1}}号
+            </view>
+            <view slot="right-icon" class="cell-value">
+              {{item.orderTypes}}
+            </view>
+          </van-cell>
+          <van-cell>
+            <van-row v-for="(item, _id) in item.goodList"
+                     :key=" idx">
+              <van-col span="6" offset="1">{{item.goodName}}</van-col>
+              <van-col span="16">× {{item.num}}</van-col>
+            </van-row>
+            <van-row>
+              <van-col span="6" offset="1">备注</van-col>
+              <van-col span="16">{{item.orderInfo}}</van-col>
+            </van-row>
+            <van-row>
+              <van-col span="24"> 实付￥{{item.totalMoney}}</van-col>
+            </van-row>
+            <van-row>
+              <van-col span="24" class="cell-value" @click="oderDetail(item._id)">查看详情</van-col>
+            </van-row>
+          </van-cell>
+          <van-cell>
+            <van-row>
+              <van-button type="default" size="small" @click="acceptOrders(item._id)" v-if="item.orderTypes===text1">配送中</van-button>
+              <van-button  type="default" size="small" @click="refuseOrders(item._id)" v-else>等待自取</van-button>
+            </van-row>
+          </van-cell>
+        </view>
+      </van-tab>
+      <van-tab title="已完成">
+        内容 2
+      </van-tab>
+      <van-tab title="已取消">
+        内容 3
+      </van-tab>
+    </van-tabs>
   </view>
 </template>
-  <script>
-    export default {
-      data () {
-        return {
-          img: 'http://p0.meituan.net/codeman/a97baf515235f4c5a2b1323a741e577185048.jpg',
-         totalTime:3,
-          content:"跳过",
-          canClick:true,
-          count:""
+<script>
+  export default {
+    onLoad(){
+      this.getOrderList() ;
+    },
+    data() {
+      return {
+        orderList: [],
+        selectedTitle: '商家接单',
+        text1:"外卖配送",
+        text2:"食堂自取",
 
+      }
+    },
+    methods: {
+      //获取栏目的内容
+      onChangeTitle(event) {
+        console.log(event.mp.detail.title);
+        let selectedTitle = event.mp.detail.title;
+        if (selectedTitle === "进行中") {
+          this.selectedTitle = "商家接单";
+          this.getOrderList()
+        } else if (selectedTitle === "已完成") {
+          this.selectedTitle = "订单完成";
+          this.getOrderList()
+        } else {
+          this.selectedTitle = "订单取消";
+          this.getOrderList();
         }
       },
-      methods: {
-    //     onReady(){
-    //       let timejump = 3;
-    //       this.count = timejump ;
-    //       this.timer = setInterval(() => {
-    //         if (this.count > 0 && this.count <= timejump) {
-    //           this.count--;
-    //         } else {
-    //           clearInterval(this.timer);
-    //           this.timer = null;
-    //           this.go()
-    //         }
-    //       },1000)
-    //     },
-    //     go(){
-    //       clearInterval(this.timer);
-    //       this.timer= null;
-    //        wx.reLaunch({
-    //   url: '/pages/index/main'
-    // });
-    //     },
-// countDown(){
-//  if (!this.canClick) return   //改动的是这两行代码
-//   this.canClick = false
-//   this.content = this.totalTime + 's后跳转'
-//   let clock = window.setInterval(() => {
-//     this.totalTime--
-//     this.content = this.totalTime + 's后跳转'
-//     if (this.totalTime < 0) {
-//        wx.reLaunch({
-//       url: '/pages/index/main'
-//     })
-//     }
-//   },1000)
-// },
+//     获取列表
+      getOrderList() {
+        const that = this;
+        const db = wx.cloud.database();
+        const order = db.collection('order');
+        order.where({
+          orderStatus: that.selectedTitle
+        }).get().then(res => {
+          console.log(res);
+          that.orderList = res.data;
+        }).catch(err => {
+          console.log(err)
+        })
+      },
+          //  查看订单详情
+      oderDetail(id) {
+        console.log(id);
+        wx.redirectTo({
+          url: `/pages/orderDetail/main?order_id=${id}`,
+        })
+      },
 
 
-        goHome(){
-        let timejump = 3;
-        this.count = timejump ;
-        if(!this.timer){
-            this.count = timejump ;
-            this.show = false;
-            this.timer = setInterval(()=>{
-            if(this.count > 0 && this.count <= timejump ){
-                this.count--;
-                this.content = this.count + 's后跳转'
-            }else{
-                this.show = true;
-                clearInterval(this.timer);
-                this.timer = null;
-                //跳转的页面写在此处
-                wx.reLaunch({
-      url: '/pages/index/main'
-    })
-            }
-          },3000)
-        }
     },
-
-          }
-    }
-  </script>
+  }
+</script>
 <style scoped>
-.contain {
-      width: 100%;
-      height: 100%;
-      position: relative;
-}
-.bg {
-      position: absolute;
-      left: 0px;
-      top: 0px;
-      width: 100%;
-      height: 100%;
-      z-index: -1;
-}
-.go {
-      position: absolute;
-      right: 30px;
-      top: 150px;
-      z-index: 9;
-}
-.go button {
-      font-size: 28px;
-      letter-spacing: 4px;
-      border-radius: 30px;
-      color: #000;
-      background: rgba(255, 255, 255, 0.781);
-       display: flex;
-      justify-content: center;
-      align-items: center;
-      text-align: center;
-      width: 160px;
-      height: 60px;
-}
+  .contain {
+    width: 100%;
+    height: 100%;
+    position: relative;
+  }
+  .cell-value {
+    color: #ff2624 !important;
+  }
 </style>
