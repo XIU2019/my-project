@@ -1,15 +1,15 @@
 {
   "pages": [
-     "pages/my/main",
+    "pages/productList/main",
+    "pages/updateGood/main",
+    "pages/my/main",
     "pages/goodManage/main",
     "pages/orderList/main",
     "pages/index/main",
     "pages/login/main",
     "pages/orderDetail/main",
-    "pages/products/main",
     "pages/search/main",
     "pages/manage/main"
-
   ],
   "window": {
     "backgroundTextStyle": "light",

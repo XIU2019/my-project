@@ -15,12 +15,12 @@
       </div>
       <div class="main">
         <van-grid column-num="2">
-          <van-grid-item icon="notes-o" text="菜品管理"/>
-          <van-grid-item icon="orders-o" text="订单管理"/>
+          <van-grid-item icon="contact" text="用户查询"/>
+          <van-grid-item icon="orders-o" text="订单查询"/>
           <van-grid-item icon="records" text="评价管理"/>
-          <van-grid-item icon="contact" text="用户管理"/>
+          <van-grid-item icon="notes-o" text="菜品管理" @click="goodManage"/>
           <van-grid-item icon="photo-o" text="轮播图管理"/>
-           <van-grid-item icon="coupon-o" text="活动设置"/>
+          <van-grid-item icon="coupon-o" text="活动设置"/>
         </van-grid>
 
         <!--        退出登录-->
@@ -73,7 +73,12 @@
         }).catch(() => {
           // on cancel
         })
-      }
+      },
+      goodManage() {
+        wx.navigateTo({
+          url: '/pages/products/main',
+        })
+      },
     },
   }
 </script>

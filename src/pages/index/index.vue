@@ -162,7 +162,7 @@
           console.log(res)
         }).catch(err => {
             console.log(err)
-          })
+          });
             db.collection('order').where({_id: id})
           .update({
               data: {
@@ -173,7 +173,7 @@
           console.log(res)
         }).catch(err => {
             console.log(err)
-          })
+          });
       },
       //  拒绝订单
       refuseOrders(id) {

@@ -36,9 +36,7 @@
 </template>
 
 <script>
-
-  import Dialog from '../../../dist/wx/static/vant/dialog/dialog'
-
+  import Dialog from "../../../dist/wx/static/vant/dialog/dialog";
   export default {
     computed: {},
     onLoad: function () {

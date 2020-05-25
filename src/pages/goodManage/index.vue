@@ -220,20 +220,18 @@
               score:that.score,
             }
           }).then(res => {
-            console.log(res)
-            wx.hideLoading()
+            console.log(res);
+            wx.hideLoading();
             wx.showToast({
               title: '发布成功',
-            })
-            //  修改订单的售后状态
-            that.updateStatus()
+            });
             // 转到订单详情
-            wx.switchTab({
-              url: '/pages/oderList/main',
+            wx.navigateTo({
+              url: "/pages/orderList/main",
             })
           })
             .catch(err => {
-              wx.hideLoading()
+              wx.hideLoading();
               wx.showToast({
                 title: '发布失败',
               })
