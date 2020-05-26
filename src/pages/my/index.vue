@@ -20,7 +20,7 @@
           <van-grid-item icon="records" text="评价管理"/>
           <van-grid-item icon="notes-o" text="菜品管理" @click="goodManage"/>
           <van-grid-item icon="photo-o" text="轮播图管理"/>
-          <van-grid-item icon="coupon-o" text="活动设置"/>
+          <van-grid-item icon="coupon-o" text="活动设置" @click="activities"/>
         </van-grid>
 
         <!--        退出登录-->
@@ -76,7 +76,12 @@
       },
       goodManage() {
         wx.navigateTo({
-          url: '/pages/products/main',
+          url: '/pages/productList/main',
+        })
+      },
+      activities(){
+             wx.navigateTo({
+          url: '/pages/activities/main',
         })
       },
     },

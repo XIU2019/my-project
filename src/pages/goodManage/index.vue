@@ -225,10 +225,10 @@
             wx.showToast({
               title: '发布成功',
             });
-            // 转到订单详情
-            wx.navigateTo({
-              url: "/pages/orderList/main",
-            })
+             // 转到菜品列表详情
+          wx.navigateTo({
+            url: "/pages/productList/main",
+          })
           })
             .catch(err => {
               wx.hideLoading();

@@ -10,18 +10,24 @@ const _ = db.command
 // 云函数入口函数
 exports.main = async (event, context) => {
   var _id=event._id
-  var addressCity = event.addressCity
-  var address=event.address
-  var phone=event.phone
-  var username=event.userName
+  var category = event.category
+  var description = event.description
+  var fileIds = event.fileIds
+  var goodName = event.goodName
+  var price = event.price
+  var score = event.score
+  var stock = event.stock
   try {
-    return await db.collection('address').doc(_id)
+    return await db.collection('good').doc(_id)
       .update({
         data: {
-          addressCity: addressCity,
-          address: address,
-          phone: phone,
-          userName: username,
+          category: category,
+          description: description,
+          fileIds: fileIds,
+          goodName: goodName,
+          price:price,
+          score:score,
+          stock:stock,
         },
       })
   } catch (e) {

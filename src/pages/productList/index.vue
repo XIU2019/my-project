@@ -149,7 +149,7 @@
             // console.log('goodList:', that.goodList)
             // 缓存地址信息
           wx.setStorage({
-            key: 'goodList ',
+            key: 'goodList',
             data: that.goodList,
             success (res) {
               console.log(res)
@@ -170,7 +170,7 @@
             // console.log('goodList:', that.goodList);
              // 缓存地址信息
           wx.setStorage({
-            key: 'goodList1',
+            key: 'goodList',
             data: that.goodList,
             success (res) {
               console.log(res)

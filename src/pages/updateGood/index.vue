@@ -101,7 +101,7 @@
       </scroll-view>
     </view>
     <view class="foot" @click="submit">
-      <text class="text">发布</text>
+      <text class="text">保存</text>
     </view>
   </view>
 </template>
@@ -137,7 +137,7 @@
     },
     methods: {
       initGoodList() {
-        let value = wx.getStorageSync('goodList1');
+        let value = wx.getStorageSync('goodList');
         if (value) {
           this.goodList = value;
           // console.log(value)
@@ -145,20 +145,21 @@
           this.goodList = '';
           console.log('2')
         }
+
         this.goodList = this.goodList.filter(item => item._id === this.id);
-        this. downloadFile()
+        // this. downloadFile()
       },
-        //  从云存储下载图片
-      downloadFile(){
-          if (this.goodList.length > 0) {
-          let fileIds=this.goodList[0].fileIds.toString();
+      //  从云存储下载图片
+      downloadFile() {
+        if (this.goodList.length > 0) {
+          let fileIds = this.goodList[0].fileIds.toString();
           console.log(fileIds);
           wx.cloud.downloadFile({
             fileID: fileIds, // 文件 ID
             success: res => {
               // 返回临时文件路径
               console.log(res.tempFilePath);
-          this.images = this.images.concat(res.tempFilePath);
+              this.images = this.images.concat(res.tempFilePath);
             },
             fail: console.error
           })
@@ -179,23 +180,23 @@
       },
       //添加菜品
       onGoodChange: function (event) {
-        this.goodName = event.mp.detail
+        this.goodList [0].goodName = event.mp.detail
         // console.log(' goodName:', this.goodName)
       },
       onCategoryChange(event) {
-        this.category = event.mp.detail
+       this.goodList [0].category = event.mp.detail
         // console.log('category:', this.category)
       },
       onPriceChange(event) {
-        this.price = event.mp.detail
+        this.goodList [0].price = event.mp.detail
         // console.log('price :', this.price)
       },
       onStockChange(event) {
-        this.stock = event.mp.detail
+        this.goodList [0].stock = event.mp.detail
         // console.log('stock :', this.stock)
       },
       onDescriptionChange(event) {
-        this.description = event.mp.detail
+        this.goodList [0].description = event.mp.detail
         // console.log(' description :', this.description)
       },
       // onContentChange: function (event) {
@@ -203,28 +204,28 @@
       //   console.log('content:', this.content)
       // },
       onScoreChange: function (event) {
-        this.score = JSON.stringify(event.mp.detail)
-        console.log('score:', this.score)
+        this.goodList [0].score = JSON.stringify(event.mp.detail);
+        // console.log('score:', this.score)
       },
       //提交
       submit: function () {
         var that = this
         wx.showLoading({
-          title: '发布中',
+          title: '保存中',
         })
         let promiseArr = []
         for (let i = 0; i < that.images.length; i++) {
           promiseArr.push(new Promise((resolve, reject) => {
-              console.log(promiseArr)
-              let item = that.images[i]
-              let suffix = /\.\w+$/.exec(item)[0]//正达表达式，返回文件的扩展名
+              console.log(promiseArr);
+              let item = that.images[i];
+              let suffix = /\.\w+$/.exec(item)[0];//正达表达式，返回文件的扩展名
               wx.cloud.uploadFile({
                   cloudPath: new Date().getTime() + suffix, // 上传至云端的路径
                   filePath: item, // 小程序临时文件路径
                   success: res => {
                     // 返回文件 ID
                     console.log(res)
-                    that.fileIds = that.fileIds.concat(res.fileID)
+                    that.fileIds = that.fileIds.concat(res.fileID);
                     resolve()
                   },
                   fail: console.error
@@ -234,37 +235,43 @@
           ))
         }
         Promise.all(promiseArr).then(res => {
-          //插入数据
-          const db = wx.cloud.database()
-          db.collection('good').add({
+          console.log(res);
+          //更新数据
+          wx.cloud.callFunction({
+            name: 'updateGood',
             data: {
-              goodName: that.goodName,
-              category: that.category,
-              price: that.price,
-              stock: that.stock,
-              description: that.description,
+              _id: that.id,
+              category: that.goodList [0].category,
+              description: that.goodList [0].description,
               fileIds: that.fileIds,
-              score: that.score,
+              goodName: that.goodList [0].goodName,
+              price: that.goodList [0].price,
+              score: that.goodList [0].score,
+              stock: that.goodList [0].stock,
             }
           }).then(res => {
             console.log(res);
             wx.hideLoading();
             wx.showToast({
-              title: '发布成功',
+              title: '保存成功',
             });
-            // 转到订单详情
-            wx.navigateTo({
-              url: "/pages/orderList/main",
-            })
           })
             .catch(err => {
-              wx.hideLoading();
-              wx.showToast({
-                title: '发布失败',
-              })
-            })
-        })
+              console.log(err)
+            });
 
+          // 转到菜品列表详情
+          wx.navigateTo({
+            url: "/pages/productList/main",
+          })
+        })
+          .catch(err => {
+            console.log(err);
+            wx.hideLoading();
+            wx.showToast({
+              title: '保存失败',
+            })
+          })
       },
       //  上传图片
       uploadImg() {
@@ -279,13 +286,15 @@
             this.images = this.images.concat(tempFilePaths);
           }
         })
-      },
+      }
+      ,
       //删除图片
       deleteImage(index) {
         console.log(index)
         this.images.splice(index, 1)
         console.log(this.images)
-      },
+      }
+      ,
 
     },
   }
