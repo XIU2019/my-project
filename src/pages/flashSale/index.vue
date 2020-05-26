@@ -25,18 +25,32 @@
           </view>
         </van-cell>
         <van-cell title="设置活动时间"/>
-        <van-cell title="开始时间" v-bind:value="startTime" is-link @click="showPopupTime1"/>
-        <van-cell title="结束时间" v-bind:value="endTime" is-link @click="showPopupTime2"/>
+        <van-cell title="开始时间" v-bind:value="startTime" is-link  value-class="cell-value" @click="showPopupTime1"/>
+        <van-cell title="结束时间" v-bind:value="endTime" is-link @click="showPopupTime2" value-class="cell-value"/>
       </van-cell-group>
     </view>
-    <van-popup v-bind:show="showTime" @close="onClose" position="bottom"
+    <!--    开始时间-->
+    <van-popup v-bind:show="showTime" @close="onClose1" position="bottom"
                custom-style="height: 50%">
       <van-datetime-picker
         type="datetime"
         v-bind:value="currentDate"
         v-bind:min-date="minDate"
         v-bind:max-date="maxDate "
-        @input="onInput"
+        @input="onInputStartTime($event)"
+        @confirm="confirmStartTime($event)"
+      />
+    </van-popup>
+    <!--    结束时间-->
+    <van-popup v-bind:show="show" @close="onClose2" position="bottom"
+               custom-style="height: 50%">
+      <van-datetime-picker
+        type="datetime"
+        v-bind:value="currentDate"
+        v-bind:min-date="minDate"
+        v-bind:max-date="maxDate "
+        @input="onInputEndTime($event)"
+        @confirm="confirmEndTime($event)"
       />
     </van-popup>
   </view>
@@ -59,13 +73,14 @@
     data() {
       return {
         goodList: [],
+        show: false,
         showTime: false,
         startTime: '',
         endTime: "",
         minHour: 10,
         maxHour: 20,
         minDate: new Date().getTime(),
-        maxDate: new Date(2019, 10, 1).getTime(),
+        maxDate: new Date(2020, 10, 1).getTime(),
         currentDate: new Date().getTime(),
       }
     },
@@ -94,14 +109,52 @@
         this.showTime = true;
       },
       showPopupTime2() {
-        this.showTime = true;
+        this.show = true;
       },
-      onClose() {
+      onClose1() {
         this.showTime = false;
       },
+      onClose2() {
+        this.show = false;
+      },
 
-      onInput(event) {
-        this.currentDate=event.mp.detail;
+      onInputStartTime(event) {
+        console.log(event.mp.detail);
+        // const time1 = new Date(event.mp.detail);
+        // this.currentDate = event.mp.detail;
+        // console.log(time1);
+        const now = new Date(event.mp.detail);
+        const y = now.getFullYear();
+        const m = now.getMonth() + 1;
+        const d = now.getDate();
+        this.startTime = y + "-" + (m < 10 ? "0" + m : m) + "-" + (d < 10 ? "0" + d : d) + " " + now.toTimeString().substr(0, 8);
+        // this.startTime = time1.toLocaleDateString().replace(/\//g, "-") + " " + time1.toTimeString().substr(0, 8);
+      },
+
+      confirmStartTime(event) {
+        const now = new Date(event.mp.detail);
+        const y = now.getFullYear();
+        const m = now.getMonth() + 1;
+        const d = now.getDate();
+        this.startTime = y + "-" + (m < 10 ? "0" + m : m) + "-" + (d < 10 ? "0" + d : d) + " " + now.toTimeString().substr(0, 8);
+        this.showTime = false;
+      },
+      onInputEndTime(event) {
+        console.log('1', event.mp.detail);
+        const now = new Date(event.mp.detail);
+        const y = now.getFullYear();
+        const m = now.getMonth() + 1;
+        const d = now.getDate();
+        this.endTime = y + "-" + (m < 10 ? "0" + m : m) + "-" + (d < 10 ? "0" + d : d) + " " + now.toTimeString().substr(0, 8);
+        console.log(this.endTime)
+      },
+      confirmEndTime(event) {
+        const now = new Date(event.mp.detail);
+        const y = now.getFullYear();
+        const m = now.getMonth() + 1;
+        const d = now.getDate();
+        this.endTime = y + "-" + (m < 10 ? "0" + m : m) + "-" + (d < 10 ? "0" + d : d) + " " + now.toTimeString().substr(0, 8);
+        this.show = false;
       },
     },
   }
@@ -178,5 +231,9 @@
     width: 100%;
     height: 90%;
     background: #ffffff;
+  }
+  .cell-value{
+    color: #000900!important;
+    font-size: 16px!important;
   }
 </style>

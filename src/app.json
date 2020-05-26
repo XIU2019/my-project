@@ -1,7 +1,7 @@
 {
   "pages": [
-    "pages/activities/main",
     "pages/flashSale/main",
+    "pages/activities/main",
     "pages/my/main",
     "pages/productList/main",
     "pages/updateGood/main",
