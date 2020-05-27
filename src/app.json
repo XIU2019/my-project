@@ -1,12 +1,13 @@
 {
   "pages": [
-    "pages/flashSale/main",
     "pages/activities/main",
+    "pages/orderList/main",
+    "pages/flashSale/main",
+    "pages/updateSale/main",
     "pages/my/main",
     "pages/productList/main",
     "pages/updateGood/main",
     "pages/goodManage/main",
-    "pages/orderList/main",
     "pages/index/main",
     "pages/login/main",
     "pages/orderDetail/main",

@@ -33,7 +33,49 @@
             </view>
           </van-tab>
           <van-tab title="限时打折">
-            内容 2
+            <view v-for="(item, idx) in saleList"
+                  :key="idx">
+              <van-cell>
+                <view slot="title">
+                  {{idx+1}}号
+                </view>
+                <view slot="right-icon" class="cell-value">
+                  准备中
+                </view>
+              </van-cell>
+              <van-card
+                v-for="(item, index) in item.goodList"
+                :key="index"
+                v-bind:tag="item.discount"
+                v-bind:num="item.stock"
+                v-bind:origin-price="item.price"
+                v-bind:price="item.price"
+                v-bind:desc="item.description"
+                v-bind:title="item.goodName"
+                v-bind:thumb="item.fileIds"
+                thumb-mode="aspectFit"
+              >
+                <view slot="tags">
+                  <text class="name ">自评</text>
+                  <van-icon name="star" color="yellow"/>
+                  {{item.score}}
+                </view>
+              </van-card>
+              <van-cell title=" 活动时间：" use-label-slot>
+                <view slot="label">
+                  <van-row>
+                    <van-col span="8">{{item.startTime}}</van-col>
+                    <van-col span="8">{{item.endTime}}</van-col>
+                  </van-row>
+                </view>
+              </van-cell>
+              <van-cell>
+                <van-row>
+                  <van-button type="default" size="small" @click="updateSale(item._id)">修改</van-button>
+                  <van-button type="default" size="small" @click="removeSale(item._id)">删除</van-button>
+                </van-row>
+              </van-cell>
+            </view>
           </van-tab>
         </van-tabs>
       </scroll-view>
@@ -41,13 +83,13 @@
     <view class="foot">
       <view class="box1">
         <view>
-          <van-icon v-if="selectAllStatus" color="#FF2426" size="23px" name="passed" @click="SelectedAll($event)"/>
-          <van-icon v-else name="circle" size="23px" color="#FF2426" @click="SelectedAll($event)">全选</van-icon>
+          <van-icon v-if="selectAllStatus" color="#FF2426" size="23px" name="passed" @click="selectAll($event)"/>
+          <van-icon v-else name="circle" size="23px" color="#FF2426" @click="selectAll($event)">全选</van-icon>
           <text>全选</text>
         </view>
       </view>
       <view class="box2" @click="limit">
-        <text class="text" >设置限时打折</text>
+        <text class="text">设置限时打折</text>
       </view>
     </view>
   </view>
@@ -57,13 +99,16 @@
   export default {
     computed: {},
     onLoad: function () {
-      this.getGoodList()
+      this.getGoodList();
+      this.getSaleList();
     },
     onShow: function () {
-      this.getGoodList()
+      this.getGoodList();
+      this.getSaleList();
     },
     onReady() {
-      this.getGoodList()
+      this.getGoodList();
+      this.getSaleList();
     },
     data() {
       return {
@@ -77,6 +122,8 @@
         show: false,
         time: '',//活动时间
         showTime: false,
+        saleList: [],//活动列表
+
       }
     },
     methods: {
@@ -117,10 +164,17 @@
               item.selected = true
             });
             this.goodList1 = this.goodList.filter(item => item.selected === true);
+            // wx.setStorage({
+            //   key: 'goodList',
+            //   data: that.goodList,
+            //   success(res) {
+            //     console.log(res)
+            //   }
+            // })
             // 缓存地址信息
             wx.setStorage({
               key: 'goodList',
-              data: that.goodList,
+              data: this.goodList1,
               success(res) {
                 console.log(res)
               }
@@ -142,6 +196,14 @@
               item.selected = true
             });
             this.goodList1 = this.goodList.filter(item => item.selected === true);
+            // 缓存地址信息
+            wx.setStorage({
+              key: 'goodList',
+              data: this.goodList1,
+              success(res) {
+                console.log(res)
+              }
+            })
             // console.log('goodList:', that.goodList);
           })
             .catch(err => {
@@ -149,19 +211,12 @@
             })
         }
       },
-      limit(){
+      limit() {
         // 转到菜品列表详情
-          wx.navigateTo({
-            url: "/pages/flashSale/main",
-          })
+        wx.navigateTo({
+          url: "/pages/flashSale/main",
+        })
       },
-      // showPopup() {
-      //   this.show = true;
-      // },
-      // onClose() {
-      //   this.show = false;
-      //
-      // },
       //单选
       onChangeSelected(id) {
         this.selectAllStatus = false;
@@ -180,7 +235,7 @@
         })
       },
       //全选
-      SelectedAll(event) {
+      selectAll(event) {
         let selectAllStatus = this.selectAllStatus;
         selectAllStatus = !selectAllStatus;
         let goodList = this.goodList;
@@ -199,25 +254,39 @@
           }
         })
       },
-      //  设置折扣
-      onChangeStep(event, id) {
-        console.log(event.mp.detail, id);
-        let discount = event.mp.detail;
-        console.log(discount);
-        this.goodList1.map(item => {
-          if (item._id === id)
-            return item.discount = discount
-        });
+      // 查询促销活动
+      getSaleList() {
+        const that = this;
+        const db = wx.cloud.database();
+        const good = db.collection('sale');
+        good.get().then(res => {
+          console.log(res);
+          that.saleList = [];
+          that.saleList = that.saleList.concat(res.data);
+          // 缓存地址信息
+          wx.setStorage({
+            key: 'saleList',
+            data: this.saleList,
+            success(res) {
+              console.log(res)
+            }
+          })
+        })
+          .catch(err => {
+            console.log(err)
+          })
       },
-      // showPopupTime1() {
-      //   this.showTime = true
-      // },
-      //     showPopupTime2() {
-      //   this.showTime = true
-      // },
-      // onCloseTime(){
-      //    this.showTime = false
-      // },
+      //  修改信息
+      updateSale(id) {
+        console.log(id);
+          wx.navigateTo({
+          url: `/pages/updateSale/main?id=${id}`,
+        })
+      },
+      //  删除活动信息
+      removeSale(id) {
+
+      },
     },
 
   }
@@ -294,5 +363,9 @@
     width: 100%;
     height: 90%;
     background: #ffffff;
+  }
+
+  .cell-value {
+    color: #ff2624 !important;
   }
 </style>

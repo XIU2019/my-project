@@ -11,22 +11,24 @@
             </van-row>
           </view>
         </van-cell>
-        <van-cell v-for="(item, idx) in goodList"
+        <van-cell v-for="(item, idx) in saleList[0].goodList"
                   :key="idx" use-label-slot>
           <view slot="label">
             <van-row>
               <van-col span="8">{{item.goodName}}</van-col>
               <van-col span="8">￥{{item.price}}</van-col>
               <van-col span="8">
-                <van-stepper v-bind:value="1 " input-width="40px" button-size="20px"
+                <van-stepper v-bind:value="item.discount" input-width="40px" button-size="20px"
                              @change="onChangeStep($event,item._id)"/>
               </van-col>
             </van-row>
           </view>
         </van-cell>
         <van-cell title="设置活动时间"/>
-        <van-cell title="开始时间" v-bind:value="startTime" is-link value-class="cell-value" @click="showPopupTime1"/>
-        <van-cell title="结束时间" v-bind:value="endTime" is-link @click="showPopupTime2" value-class="cell-value"/>
+        <van-cell title="开始时间" v-bind:value="saleList[0].startTime" is-link value-class="cell-value"
+                  @click="showPopupTime1"/>
+        <van-cell title="结束时间" v-bind:value="saleList[0].endTime" is-link @click="showPopupTime2"
+                  value-class="cell-value"/>
       </van-cell-group>
     </view>
     <view class="box3" @click="onSubmit">
@@ -63,19 +65,20 @@
   export default {
     computed: {},
     onLoad: function (e) {
-      console.log(e);
+      console.log(e.id);
       Object.assign(this.$data, this.$options.data());
-      this.initGoodList();
+      this.initSaleList();
+      this.id = e.id
     },
     onShow: function () {
-
+      this.initSaleList();
     },
     onReady() {
-
+      this.initSaleList();
     },
     data() {
       return {
-        goodList: [],
+        saleList: [],
         show: false,
         showTime: false,
         startTime: '',
@@ -86,18 +89,22 @@
         maxDate: new Date(2020, 10, 1).getTime(),
         currentDate: new Date().getTime(),
         discount: "",
+        id: "",//修改列表ID
+        goodList: [],
       }
     },
     methods: {
       //初试化菜品信息
-      initGoodList() {
-        let value = wx.getStorageSync('goodList');
+      initSaleList() {
+        let value = wx.getStorageSync('saleList');
         if (value) {
-          this.goodList = value;
+          this.saleList = value;
         } else {
-          this.goodList = '';
+          this.saleList = '';
           console.log('2')
         }
+        this.saleList = this.saleList.filter(item => item._id === this.id);
+        // this.goodList=this.saleList[0].goodList[0];
       },
       //  设置折扣
       onChangeStep(event, id) {
@@ -162,30 +169,33 @@
       },
       //  保存到数据库中
       onSubmit() {
+        //更新数据
         var that = this;
-        const db = wx.cloud.database();
-        db.collection('sale').add({
+        wx.cloud.callFunction({
+          name: 'updateSale1',
           data: {
-            goodList: that.goodList,
-            startTime: that.startTime,
-            endTime: that.endTime,
+            _id: that.id,
+            endTime: that.saleList[0].endTime,
+            startTime: that.saleList [0].startTime,
+            goodList: that.saleList [0].goodList,
           }
         }).then(res => {
           console.log(res);
+          wx.hideLoading();
           wx.showToast({
-            title: '保存成功',
+            title: '修改成功',
           });
           // 转到菜品列表详情
           wx.navigateTo({
             url: "/pages/activities/main",
           })
-        }).catch(err => {
-          console.log(err)
-          wx.showToast({
-            title: '保存失败',
-          })
         })
-      }
+          .catch(err => {
+            console.log(err)
+          });
+
+      },
+
     },
   }
 </script>
