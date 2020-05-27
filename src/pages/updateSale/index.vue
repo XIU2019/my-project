@@ -78,6 +78,7 @@
     },
     data() {
       return {
+       result: [],
         saleList: [],
         show: false,
         showTime: false,
@@ -89,8 +90,8 @@
         maxDate: new Date(2020, 10, 1).getTime(),
         currentDate: new Date().getTime(),
         discount: "",
-        id: "",//修改列表ID
-        goodList: [],
+        id: "",
+
       }
     },
     methods: {
@@ -99,22 +100,26 @@
         let value = wx.getStorageSync('saleList');
         if (value) {
           this.saleList = value;
+          this.saleList = this.saleList.filter(item => item._id === this.id);
+          // this.result= this.saleList.goodList;
+          console.log(this.saleList.goodList)
         } else {
           this.saleList = '';
           console.log('2')
         }
-        this.saleList = this.saleList.filter(item => item._id === this.id);
-        // this.goodList=this.saleList[0].goodList[0];
+
+        // this.saleList [0].goodList.map(item => {
+        //   item.discount = ""
+        // })
       },
       //  设置折扣
       onChangeStep(event, id) {
         console.log(event.mp.detail, id);
-        this.discount = event.mp.detail;
-        console.log(this.discount);
-        this.goodList.map(item => {
-          if (item._id === id)
-            return item.discount = this.discount
-        });
+        let discount = `${event.mp.detail}折`;
+        console.log(discount);
+        const index = this.saleList [0].goodList.findIndex(item => item._id === id);
+        this.saleList [0].goodList[index].discount = discount;
+        this.$set(this.saleList, index, this.saleList[index])
       },
       showPopupTime1() {
         this.showTime = true;

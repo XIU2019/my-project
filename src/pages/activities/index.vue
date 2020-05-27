@@ -49,7 +49,7 @@
                 v-bind:tag="item.discount"
                 v-bind:num="item.stock"
                 v-bind:origin-price="item.price"
-                v-bind:price="item.price"
+                v-bind:price="item.nowPrice"
                 v-bind:desc="item.description"
                 v-bind:title="item.goodName"
                 v-bind:thumb="item.fileIds"
@@ -176,7 +176,7 @@
               key: 'goodList',
               data: this.goodList1,
               success(res) {
-                console.log(res)
+                // console.log(res)
               }
             })
           })
@@ -201,7 +201,7 @@
               key: 'goodList',
               data: this.goodList1,
               success(res) {
-                console.log(res)
+                // console.log(res)
               }
             })
             // console.log('goodList:', that.goodList);
@@ -279,13 +279,31 @@
       //  修改信息
       updateSale(id) {
         console.log(id);
-          wx.navigateTo({
+        wx.navigateTo({
           url: `/pages/updateSale/main?id=${id}`,
         })
       },
       //  删除活动信息
       removeSale(id) {
-
+        var that = this;
+        const db = wx.cloud.database();
+        db.collection('sale')
+          .where(
+            {
+              _id: id,
+            }
+          ).remove().then(res => {
+          console.log(res);
+          wx.showToast({
+            title: '删除成功',
+          });
+          that.getSaleList();
+        }).catch(err => {
+          console.log(err);
+          wx.showToast({
+            title: '删除失败',
+          });
+        })
       },
     },
 

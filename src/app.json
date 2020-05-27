@@ -1,8 +1,8 @@
 {
   "pages": [
     "pages/activities/main",
-    "pages/orderList/main",
     "pages/flashSale/main",
+    "pages/orderList/main",
     "pages/updateSale/main",
     "pages/my/main",
     "pages/productList/main",

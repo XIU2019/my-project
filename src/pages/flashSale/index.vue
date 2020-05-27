@@ -98,16 +98,22 @@
           this.goodList = '';
           console.log('2')
         }
+        this.goodList.map(item => {
+          item.discount = "";
+          item.nowPrice = "";
+        })
       },
       //  设置折扣
       onChangeStep(event, id) {
         console.log(event.mp.detail, id);
-        this.discount = event.mp.detail;
-        console.log(this.discount);
-        this.goodList.map(item => {
-          if (item._id === id)
-            return item.discount = this.discount
-        });
+        let discount1=event.mp.detail/10;
+        let discount = `${event.mp.detail}折`;
+        const index = this.goodList.findIndex(item => item._id === id);
+        this.goodList[index].discount = discount;
+        let nowPrice = discount1 * this.goodList[index].price;
+        this.goodList[index].nowPrice = nowPrice;
+        this.$set(this.goodList, index, this.goodList[index])
+        console.log(discount, nowPrice)
       },
       showPopupTime1() {
         this.showTime = true;
