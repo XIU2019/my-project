@@ -41,7 +41,39 @@
         </view>
       </van-tab>
       <van-tab title="已完成">
-        内容 2
+        <view v-for="(item, index) in orderList"
+              :key="index">
+          <van-cell>
+            <view slot="title">
+              {{index+1}}号
+            </view>
+            <view slot="right-icon" class="cell-value">
+              {{item.orderTypes}}
+            </view>
+          </van-cell>
+          <van-cell>
+            <van-row v-for="(item, _id) in item.goodList"
+                     :key=" idx">
+              <van-col span="6" offset="1">{{item.goodName}}</van-col>
+              <van-col span="16">× {{item.num}}</van-col>
+            </van-row>
+            <van-row>
+              <van-col span="6" offset="1">备注</van-col>
+              <van-col span="16">{{item.orderInfo}}</van-col>
+            </van-row>
+            <van-row>
+              <van-col span="24"> 实付￥{{item.totalMoney}}</van-col>
+            </van-row>
+            <van-row>
+              <van-col span="24" class="cell-value" @click="oderDetail(item._id)">查看详情</van-col>
+            </van-row>
+          </van-cell>
+          <van-cell>
+            <van-row>
+              <van-button type="default" size="small" @click="goComment(item._id)">查看评价</van-button>
+            </van-row>
+          </van-cell>
+        </view>
       </van-tab>
       <van-tab title="已取消">
         内容 3

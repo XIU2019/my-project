@@ -1,5 +1,7 @@
 {
   "pages": [
+    "pages/login/main",
+    "pages/index/main",
     "pages/activities/main",
     "pages/flashSale/main",
     "pages/orderList/main",
@@ -8,8 +10,6 @@
     "pages/productList/main",
     "pages/updateGood/main",
     "pages/goodManage/main",
-    "pages/index/main",
-    "pages/login/main",
     "pages/orderDetail/main",
     "pages/search/main",
     "pages/manage/main"
