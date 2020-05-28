@@ -110,6 +110,12 @@
       this.getGoodList();
       this.getSaleList();
     },
+    onUnload(){
+    wx.reLaunch({
+      url: '/pages/my/main'
+    })
+    },
+
     data() {
       return {
         active: 0,
@@ -214,7 +220,7 @@
       limit() {
         // 转到菜品列表详情
         wx.navigateTo({
-          url: "/pages/flashSale/main",
+          url: "/pages/sale/main",
         })
       },
       //单选
@@ -280,7 +286,7 @@
       updateSale(id) {
         console.log(id);
         wx.navigateTo({
-          url: `/pages/updateSale/main?id=${id}`,
+          url: `/pages/updateSaleList/main?id=${id}`,
         })
       },
       //  删除活动信息

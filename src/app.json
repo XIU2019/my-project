@@ -1,14 +1,16 @@
 {
   "pages": [
+    "pages/my/main",
+    "pages/addGood/main",
+    "pages/addGood2/main",
+    "pages/updateGoodList/main",
+    "pages/sale/main",
+    "pages/updateSaleList/main",
+    "pages/saleList/main",
     "pages/login/main",
     "pages/index/main",
-    "pages/activities/main",
-    "pages/flashSale/main",
     "pages/orderList/main",
-    "pages/updateSale/main",
-    "pages/my/main",
     "pages/productList/main",
-    "pages/updateGood/main",
     "pages/goodManage/main",
     "pages/orderDetail/main",
     "pages/search/main",
@@ -39,7 +41,7 @@
         "text": "已处理订单"
       },
       {
-        "pagePath": "pages/goodManage/main",
+        "pagePath": "pages/addGood/main",
         "selectedIconPath": "static/images/tab3-o.png",
         "iconPath": "static/images/tab5.png",
         "text": "商品"

@@ -81,7 +81,7 @@
       },
       activities(){
              wx.navigateTo({
-          url: '/pages/activities/main',
+          url: '/pages/saleList/main',
         })
       },
     },

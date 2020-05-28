@@ -1,6 +1,7 @@
 <template>
   <div class="body">
     <view class="main">
+      <scroll-view scroll-y="true" style="height: 100%;" @scrolltoupper="upper" @scrolltolower="lower" @scroll="scroll">
       <van-tabs v-bind:active=" active " @change="onChangeTitle">
         <van-tab title="全部">
           <view>
@@ -103,14 +104,13 @@
           </view>
         </van-tab>
       </van-tabs>
+      </scroll-view>
     </view>
     <view class="foot">
       <text class="text" @click="addGood">新增菜品</text>
     </view>
   </div>
-
 </template>
-
 <script>
   export default {
     computed: {},
@@ -131,6 +131,17 @@
       }
     },
     methods: {
+       upper(e) {
+        // console.log(e)
+      },
+
+      lower(e) {
+        // console.log(e)
+      },
+
+      scroll(e) {
+        // console.log(e)
+      },
       onChangeTitle(event) {
         console.log(event.mp.detail.title);
         this.clickTitle = event.mp.detail.title;
@@ -186,7 +197,7 @@
       update(id) {
         console.log(id);
         wx.navigateTo({
-          url: `/pages/updateGood/main?id=${id}`,
+          url: `/pages/updateGoodList/main?id=${id}`,
         })
       },
       //删除
@@ -203,8 +214,8 @@
       },
       //  新增产品
       addGood() {
-        wx.switchTab({
-          url: '/pages/goodManage/main',
+        wx.navigateTo({
+          url: '/pages/addGood2/main',
         })
       },
     },
