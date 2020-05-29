@@ -1,6 +1,8 @@
 {
   "pages": [
     "pages/my/main",
+    "pages/commentList/main",
+    "pages/reply/main",
     "pages/addGood/main",
     "pages/addGood2/main",
     "pages/updateGoodList/main",

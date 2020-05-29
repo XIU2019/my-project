@@ -17,7 +17,7 @@
         <van-grid column-num="2">
           <van-grid-item icon="contact" text="用户查询"/>
           <van-grid-item icon="orders-o" text="订单查询"/>
-          <van-grid-item icon="records" text="评价管理"/>
+          <van-grid-item icon="records" text="评价管理" @click="commentList"/>
           <van-grid-item icon="notes-o" text="菜品管理" @click="goodManage"/>
           <van-grid-item icon="photo-o" text="轮播图管理"/>
           <van-grid-item icon="coupon-o" text="活动设置" @click="activities"/>
@@ -82,6 +82,11 @@
       activities(){
              wx.navigateTo({
           url: '/pages/saleList/main',
+        })
+      },
+      commentList(){
+          wx.navigateTo({
+          url: '/pages/commentList/main',
         })
       },
     },
