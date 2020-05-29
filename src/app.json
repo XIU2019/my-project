@@ -1,5 +1,7 @@
 {
   "pages": [
+    "pages/orderList/main",
+    "pages/index/main",
     "pages/my/main",
     "pages/commentList/main",
     "pages/reply/main",
@@ -10,8 +12,6 @@
     "pages/updateSaleList/main",
     "pages/saleList/main",
     "pages/login/main",
-    "pages/index/main",
-    "pages/orderList/main",
     "pages/productList/main",
     "pages/goodManage/main",
     "pages/orderDetail/main",

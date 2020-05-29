@@ -5,7 +5,7 @@
     </div>
     <div class="top">
       <van-steps v-bind:steps="steps" v-bind:active="active" active-icon="success"
-                 active-color="#FF2620" desc-class="desc-class1" @clickStep="onchangeStep"/>
+                 active-color="#FF2620" desc-class="desc-class1" />
     </div>
     <div class="main">
       <scroll-view scroll-y="true" style="height: 100%;" @scrolltoupper="upper" @scrolltolower="lower" @scroll="scroll">
@@ -37,12 +37,13 @@
               </van-cell>
             </van-cell-group>
           </van-swipe-cell>
-          <div class="mainBox3">
-            <van-cell title="订单信息">
+<!--          外卖配送类型-->
+          <div class="mainBox3" v-if="orderList.orderTypes===text">
+            <van-cell title="订单信息"  >
               <van-icon slot="icon" name="label-o" color="red" size="20px" class="custom-icon"/>
             </van-cell>
             <van-row>
-              <van-col offset="1.5" class="text">订单号：z2020295555</van-col>
+              <van-col offset="1.5" class="text">订单号：{{orderList.orderId}}</van-col>
             </van-row>
             <van-row>
               <van-col offset="1.5" class="text">下单时间：{{orderList.orderTime}}</van-col>
@@ -52,6 +53,33 @@
             </van-row>
             <van-row>
               <van-col offset="1.5" class="text">订单备注：{{orderList.orderInfo}}</van-col>
+            </van-row>
+             <van-row>
+              <van-col offset="1.5" class="text">订单类型：{{orderList.orderTypes}}</van-col>
+            </van-row>
+          </div>
+<!--          食堂自取-->
+          <div class="mainBox3" v-else>
+            <van-cell title="订单信息"  >
+              <van-icon slot="icon" name="label-o" color="red" size="20px" class="custom-icon"/>
+            </van-cell>
+            <van-row>
+              <van-col offset="1.5" class="text">订单号：{{orderList.orderId}}</van-col>
+            </van-row>
+             <van-row>
+              <van-col offset="1.5" class="text1">取餐码：{{orderList.mealCode}}</van-col>
+            </van-row>
+            <van-row>
+              <van-col offset="1.5" class="text">下单时间：{{orderList.orderTime}}</van-col>
+            </van-row>
+            <van-row>
+              <van-col offset="1.5" class="text">下单方式：{{orderList.payment}}</van-col>
+            </van-row>
+            <van-row>
+              <van-col offset="1.5" class="text">订单备注：{{orderList.orderInfo}}</van-col>
+            </van-row>
+            <van-row>
+              <van-col offset="1.5" class="text">订单类型：{{orderList.orderTypes}}</van-col>
             </van-row>
           </div>
           <div class="mainBox4">
@@ -67,9 +95,6 @@
             <van-row>
               <van-col offset="1.5" class="text">联系方式：{{orderList.phone}}</van-col>
             </van-row>
-            <van-row>
-              <van-col offset="1.5" class="text">配送地址：{{orderList.addressCity}} {{orderList.address}}</van-col>
-            </van-row>
           </div>
         </div>
 
@@ -80,20 +105,21 @@
 </template>
 <script>
   export default {
+    computed: {},
     onLoad (e) {
       console.log(e)
       Object.assign(this.$data, this.$options.data())
       this.order_id = e.order_id
+      // this.order_id='4c5846c75ed1030200032415653e98ca'
       this.orderAdmit_id = e.orderAdmit_id
-      // 05f2c36f5ebbafbf00b779371e24a9d3
-      // 982133855ebbafbf00a289942c1b73a0
       this.getOrderList()
     },
     onReady () {
- this.getOrderList()
+      this.getOrderList()
+
     },
     onShow () {
- this.getOrderList()
+      this.getOrderList()
     },
     data () {
       return {
@@ -120,9 +146,31 @@
         flat: true,
         context: '',
         message: '',
+        text:'外卖配送',
       }
     },
     methods: {
+      // 监听订单状态
+      onStep () {
+        // console.log('1', this.orderList.orderStatus)
+        if (this.orderList.orderStatus === '商家接单') {
+          this.active = 1
+          this.flat = false
+          this.message = '商家已接单，请耐心等待'
+          this.context = '再来一单'
+        } else if (this.orderList.orderStatus === '配送中') {
+           this.active = 2
+          this.flat = false
+          this.message = '商品配送中，请耐心等待'
+          this.context = '再来一单'
+        } else if (this.orderList.orderStatus === '订单完成') {
+           this.active = 3
+          this.flat = false
+          this.message = '订单已完成，去评价'
+          this.context = '再来一单'
+        }
+
+      },
       onchangeStep (event) {
         console.log(event.mp.detail)
         this.active = event.mp.detail
@@ -161,6 +209,7 @@
           console.log(res)
           that.orderList = res.data
           that.goodList = that.orderList.goodList
+          this.onStep()
         }).catch(err => {
           console.log(err)
         })
@@ -208,7 +257,11 @@
     font-size: 16px !important;
     line-height: 35px;
   }
-
+.text1{
+  font-size: 16px !important;
+    line-height: 35px;
+  color: red;
+}
   .body {
     width: 100%;
     height: 100%;
@@ -317,7 +370,7 @@
 
   .mainBox3 {
     width: 100%;
-    height: 200px;
+    height: auto;
     background: #ffffff;
     margin: 10px auto;
     position: relative;
@@ -325,7 +378,7 @@
 
   .mainBox4 {
     width: 100%;
-    height: 200px;
+    height: auto;
     background: #ffffff;
     margin: 10px auto;
     position: relative;
