@@ -140,6 +140,12 @@
     onLoad() {
       this.getOrderList();
     },
+    onShow() {
+      this.getOrderList();
+    },
+    onReady() {
+      this.getOrderList();
+    },
     data() {
       return {
         orderList: [],
@@ -180,8 +186,15 @@
         console.log(event.mp.detail.title);
         let selectedTitle = event.mp.detail.title;
         if (selectedTitle === "进行中") {
-          this.selectedTitle = "商家接单";
-          this.getOrderList()
+           for (let i = 0; i < this.orderList.length; i++) {
+            let orderStatus = this.orderList[i].orderStatus;
+            if (orderStatus === "商家接单") {
+              this.selectedTitle = "商家接单";
+              console.log(this.selectedTitle);
+            } else if (orderStatus === "配送中") {
+              this.selectedTitle = "配送中";
+            }
+          }
         } else if (selectedTitle === "已完成") {
           this.selectedTitle = "订单完成";
           this.getOrderList()
@@ -195,16 +208,23 @@
         const that = this;
         const db = wx.cloud.database();
         const order = db.collection('order');
-        if (this.selectedTitle !== "") {
-          order.where({
-            orderStatus: that.selectedTitle
-          }).get().then(res => {
-            console.log(res);
-            that.orderList = res.data;
-          }).catch(err => {
-            console.log(err)
-          })
-        }
+        order.where({
+          orderStatus: that.selectedTitle
+        }).get().then(res => {
+          console.log(res);
+          that.orderList = res.data;
+             for (let i = 0; i < this.orderList.length; i++) {
+            let orderStatus = this.orderList[i].orderStatus;
+            if (orderStatus === "商家接单") {
+              this.selectedTitle = "商家接单";
+              console.log(this.selectedTitle);
+            } else if (orderStatus === "配送中") {
+              this.selectedTitle = "配送中";
+            }
+          }
+        }).catch(err => {
+          console.log(err)
+        })
       },
       //  查看订单详情
       oderDetail(id) {
