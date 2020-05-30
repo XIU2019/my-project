@@ -40,7 +40,7 @@
           </view>
         </van-tab>
         <van-tab title="食堂">
-           <view v-for="(item, index) in orderList"
+          <view v-for="(item, index) in orderList"
                 :key="index">
             <van-cell>
               <view slot="title">
@@ -126,7 +126,7 @@
           order.where({
             serviceStatus: that.selectedTitle,
           }).where({
-              orderStatus: '等待接单',
+            orderStatus: '等待接单',
           }).get().then(res => {
             console.log(res);
             that.orderList = that.orderList.concat(res.data);
@@ -159,26 +159,27 @@
               }
             }
           ).then(res => {
-          console.log(res)
+          console.log(res);
+           this.getOrderList();
         }).catch(err => {
-            console.log(err)
-          });
-            db.collection('order').where({_id: id})
+          console.log(err)
+        });
+        db.collection('order').where({_id: id})
           .update({
               data: {
                 orderStatus: '商家接单',
               }
             }
           ).then(res => {
-          console.log(res)
+          console.log(res);
         }).catch(err => {
-            console.log(err)
-          });
+          console.log(err)
+        });
       },
       //  拒绝订单
       refuseOrders(id) {
         // console.log(id)
-           const db = wx.cloud.database();
+        const db = wx.cloud.database();
         db.collection('orderAdmit').where({orderId: id})
           .update({
               data: {
@@ -186,11 +187,12 @@
               }
             }
           ).then(res => {
-          console.log(res)
+          console.log(res);
+          this.getOrderList();
         }).catch(err => {
-            console.log(err)
-          })
-            db.collection('order').where({_id: id})
+          console.log(err)
+        })
+        db.collection('order').where({_id: id})
           .update({
               data: {
                 orderStatus: '拒绝接单',
@@ -199,14 +201,14 @@
           ).then(res => {
           console.log(res)
         }).catch(err => {
-            console.log(err)
-          })
+          console.log(err)
+        })
       }
       ,
       //  查看订单详情
       oderDetail(id) {
         console.log(id);
-        wx.redirectTo({
+        wx.navigateTo({
           url: `/pages/orderDetail/main?order_id=${id}`,
         })
       }

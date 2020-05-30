@@ -31,11 +31,19 @@
           </van-cell>
           <van-cell>
             <van-row>
-              <van-button type="default" size="small" @click="sendingOrder(item._id)" v-if="item.orderTypes===text1">
+              <van-button type="default" size="small" @click="sendingOrder(item._id)"
+                          v-if="item.orderTypes===text1&&send===false ">
                 配送中
               </van-button>
-              <van-button type="default" size="small" @click="waitingOrder(item._id)" v-else>等待自取</van-button>
-              <van-button type="default" size="small" @click="showPopup(item._id)">核对取餐码</van-button>
+              <van-button type="default" size="small" @click="overOrders" v-if="send===true && item.orderTypes===text1">
+                订单完成
+              </van-button>
+              <van-button type="default" size="small" @click="waitingOrder(item._id)" v-if="item.orderTypes===text2">
+                等待自取
+              </van-button>
+              <van-button type="default" size="small" @click="showPopup(item._id)" v-if="item.orderTypes===text2">
+                核对取餐码
+              </van-button>
               <van-popup v-bind:show="show" @close="onClose"
                          custom-style="width: 90%;height:20%">
                 <view>
@@ -142,6 +150,8 @@
         show: false,
         errorMessage: '',
         mealCode: '',
+        send: false,
+        title: '',//配送中
       }
     },
     methods: {
@@ -185,14 +195,16 @@
         const that = this;
         const db = wx.cloud.database();
         const order = db.collection('order');
-        order.where({
-          orderStatus: that.selectedTitle
-        }).get().then(res => {
-          console.log(res);
-          that.orderList = res.data;
-        }).catch(err => {
-          console.log(err)
-        })
+        if (this.selectedTitle !== "") {
+          order.where({
+            orderStatus: that.selectedTitle
+          }).get().then(res => {
+            console.log(res);
+            that.orderList = res.data;
+          }).catch(err => {
+            console.log(err)
+          })
+        }
       },
       //  查看订单详情
       oderDetail(id) {
@@ -209,7 +221,7 @@
       },
       //修改订单状态为配送中
       sendingOrder(id) {
-        console.log(id)
+        console.log(id);
         const db = wx.cloud.database();
         db.collection('orderAdmit').where({orderId: id})
           .update({
@@ -218,6 +230,7 @@
               }
             }
           ).then(res => {
+          this.send = true;
           console.log(res)
         }).catch(err => {
           console.log(err)
@@ -230,7 +243,7 @@
             }
           ).then(res => {
           console.log(res);
-          this.getOrderList();
+          this.send = true;
         }).catch(err => {
           console.log(err)
         });
@@ -259,7 +272,6 @@
             }
           ).then(res => {
           console.log(res);
-          this.getOrderList();
         }).catch(err => {
           console.log(err)
         });

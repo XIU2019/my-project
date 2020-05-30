@@ -76,7 +76,7 @@
           })
           //  跳转到管理员首页
           wx.switchTab ({
-            url: '/pages/index/main'
+            url: '/pages/my/main'
           })
         } else {
           Dialog.alert({

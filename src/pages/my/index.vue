@@ -69,7 +69,10 @@
           message: '退出登录后将无法查看订单，重新登录即可查看'
         }).then(() => {
           // on confirm
-          that.isLogin = true
+          // that.isLogin = true
+              wx.redirectTo({
+          url: '/pages/login/main'
+        })
         }).catch(() => {
           // on cancel
         })

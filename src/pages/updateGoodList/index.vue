@@ -261,7 +261,7 @@
             });
 
           // 转到菜品列表详情
-          wx.navigateTo({
+         wx.redirectTo({
             url: "/pages/productList/main",
           })
         })

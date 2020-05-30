@@ -2,108 +2,108 @@
   <div class="body">
     <view class="main">
       <scroll-view scroll-y="true" style="height: 100%;" @scrolltoupper="upper" @scrolltolower="lower" @scroll="scroll">
-      <van-tabs v-bind:active=" active " @change="onChangeTitle">
-        <van-tab title="全部">
-          <view>
-            <van-card
-              v-for="(item, idx) in goodList"
-              :key="idx"
-              v-bind:tag="item.category"
-              v-bind:num="item.stock"
-              v-bind:price="item.price"
-              v-bind:desc="item.description"
-              v-bind:title="item.goodName"
-              v-bind:thumb="item.fileIds"
-              thumb-mode="aspectFit"
-            >
-              <view slot="tags">
-                <text class="name ">自评</text>
-                <van-icon name="star" color="yellow"/>
-                {{item.score}}
-              </view>
-              <view slot="footer">
-                <van-button size="mini" @click="update(item._id)">修改</van-button>
-                <van-button size="mini" @click="deleted(item._id)">删除</van-button>
-              </view>
-            </van-card>
-          </view>
-        </van-tab>
-        <van-tab title="早餐">
-          <view>
-            <van-card
-              v-for="(item, idx) in goodList"
-              :key="idx"
-              v-bind:tag="item.category"
-              v-bind:num="item.stock"
-              v-bind:price="item.price"
-              v-bind:desc="item.description"
-              v-bind:title="item.goodName"
-              v-bind:thumb="item.fileIds"
-              thumb-mode="aspectFit"
-            >
-              <view slot="tags">
-                <text class="name ">自评</text>
-                <van-icon name="star" color="yellow"/>
-                {{item.score}}
-              </view>
-              <view slot="footer">
-                <van-button size="mini" @click="update(item._id)">修改</van-button>
-                <van-button size="mini" @click="deleted(item._id)">删除</van-button>
-              </view>
-            </van-card>
-          </view>
-        </van-tab>
-        <van-tab title="午餐">
-          <view>
-            <van-card
-              v-for="(item, idx) in goodList"
-              :key="idx"
-              v-bind:tag="item.category"
-              v-bind:num="item.stock"
-              v-bind:price="item.price"
-              v-bind:desc="item.description"
-              v-bind:title="item.goodName"
-              v-bind:thumb="item.fileIds"
-              thumb-mode="aspectFit"
-            >
-              <view slot="tags">
-                <text class="name ">自评</text>
-                <van-icon name="star" color="yellow"/>
-                {{item.score}}
-              </view>
-              <view slot="footer">
-                <van-button size="mini" @click="update(item._id)">修改</van-button>
-                <van-button size="mini" @click="deleted(item._id)">删除</van-button>
-              </view>
-            </van-card>
-          </view>
-        </van-tab>
-        <van-tab title="晚餐">
-          <view>
-            <van-card
-              v-for="(item, idx) in goodList"
-              :key="idx"
-              v-bind:tag="item.category"
-              v-bind:num="item.stock"
-              v-bind:price="item.price"
-              v-bind:desc="item.description"
-              v-bind:title="item.goodName"
-              v-bind:thumb="item.fileIds"
-              thumb-mode="aspectFit"
-            >
-              <view slot="tags">
-                <text class="name ">自评</text>
-                <van-icon name="star" color="yellow"/>
-                {{item.score}}
-              </view>
-              <view slot="footer">
-                <van-button size="mini" @click="update(item._id)">修改</van-button>
-                <van-button size="mini" @click="deleted(item._id)">删除</van-button>
-              </view>
-            </van-card>
-          </view>
-        </van-tab>
-      </van-tabs>
+        <van-tabs v-bind:active=" active " @change="onChangeTitle">
+          <van-tab title="全部">
+            <view>
+              <van-card
+                v-for="(item, idx) in goodList"
+                :key="idx"
+                v-bind:tag="item.category"
+                v-bind:num="item.stock"
+                v-bind:price="item.price"
+                v-bind:desc="item.description"
+                v-bind:title="item.goodName"
+                v-bind:thumb="item.fileIds"
+                thumb-mode="aspectFit"
+              >
+                <view slot="tags">
+                  <text class="name ">自评</text>
+                  <van-icon name="star" color="yellow"/>
+                  {{item.score}}
+                </view>
+                <view slot="footer">
+                  <van-button size="mini" @click="update(item._id)">修改</van-button>
+                  <van-button size="mini" @click="deleted(item._id)">删除</van-button>
+                </view>
+              </van-card>
+            </view>
+          </van-tab>
+          <van-tab title="早餐">
+            <view>
+              <van-card
+                v-for="(item, idx) in goodList"
+                :key="idx"
+                v-bind:tag="item.category"
+                v-bind:num="item.stock"
+                v-bind:price="item.price"
+                v-bind:desc="item.description"
+                v-bind:title="item.goodName"
+                v-bind:thumb="item.fileIds"
+                thumb-mode="aspectFit"
+              >
+                <view slot="tags">
+                  <text class="name ">自评</text>
+                  <van-icon name="star" color="yellow"/>
+                  {{item.score}}
+                </view>
+                <view slot="footer">
+                  <van-button size="mini" @click="update(item._id)">修改</van-button>
+                  <van-button size="mini" @click="deleted(item._id)">删除</van-button>
+                </view>
+              </van-card>
+            </view>
+          </van-tab>
+          <van-tab title="午餐">
+            <view>
+              <van-card
+                v-for="(item, idx) in goodList"
+                :key="idx"
+                v-bind:tag="item.category"
+                v-bind:num="item.stock"
+                v-bind:price="item.price"
+                v-bind:desc="item.description"
+                v-bind:title="item.goodName"
+                v-bind:thumb="item.fileIds"
+                thumb-mode="aspectFit"
+              >
+                <view slot="tags">
+                  <text class="name ">自评</text>
+                  <van-icon name="star" color="yellow"/>
+                  {{item.score}}
+                </view>
+                <view slot="footer">
+                  <van-button size="mini" @click="update(item._id)">修改</van-button>
+                  <van-button size="mini" @click="deleted(item._id)">删除</van-button>
+                </view>
+              </van-card>
+            </view>
+          </van-tab>
+          <van-tab title="晚餐">
+            <view>
+              <van-card
+                v-for="(item, idx) in goodList"
+                :key="idx"
+                v-bind:tag="item.category"
+                v-bind:num="item.stock"
+                v-bind:price="item.price"
+                v-bind:desc="item.description"
+                v-bind:title="item.goodName"
+                v-bind:thumb="item.fileIds"
+                thumb-mode="aspectFit"
+              >
+                <view slot="tags">
+                  <text class="name ">自评</text>
+                  <van-icon name="star" color="yellow"/>
+                  {{item.score}}
+                </view>
+                <view slot="footer">
+                  <van-button size="mini" @click="update(item._id)">修改</van-button>
+                  <van-button size="mini" @click="deleted(item._id)">删除</van-button>
+                </view>
+              </van-card>
+            </view>
+          </van-tab>
+        </van-tabs>
       </scroll-view>
     </view>
     <view class="foot">
@@ -117,11 +117,11 @@
     onLoad() {
       this.getGoodList();
     },
-    onReady(){
+    onReady() {
       this.getGoodList();
     },
-    onShow(){
-         this.getGoodList();
+    onShow() {
+      this.getGoodList();
     },
     data() {
       return {
@@ -131,7 +131,7 @@
       }
     },
     methods: {
-       upper(e) {
+      upper(e) {
         // console.log(e)
       },
 
@@ -159,13 +159,13 @@
             that.goodList = that.goodList.concat(res.data);
             // console.log('goodList:', that.goodList)
             // 缓存地址信息
-          wx.setStorage({
-            key: 'goodList',
-            data: that.goodList,
-            success (res) {
-              console.log(res)
-            }
-          })
+            wx.setStorage({
+              key: 'goodList',
+              data: that.goodList,
+              success(res) {
+                console.log(res)
+              }
+            })
           })
             .catch(err => {
               console.log(err)
@@ -179,14 +179,14 @@
             that.goodList = [];
             that.goodList = that.goodList.concat(res.data);
             // console.log('goodList:', that.goodList);
-             // 缓存地址信息
-          wx.setStorage({
-            key: 'goodList',
-            data: that.goodList,
-            success (res) {
-              console.log(res)
-            }
-          })
+            // 缓存地址信息
+            wx.setStorage({
+              key: 'goodList',
+              data: that.goodList,
+              success(res) {
+                console.log(res)
+              }
+            })
           })
             .catch(err => {
               console.log(err)
@@ -206,11 +206,12 @@
         const db = wx.cloud.database();
         const good = db.collection('good');
         good.doc(id).remove().then(res => {
-          console.log(res)
+          console.log(res);
+          this.getGoodList();
         }).catch(err => {
           console.log(err)
         });
-        this.getGoodList();
+
       },
       //  新增产品
       addGood() {
